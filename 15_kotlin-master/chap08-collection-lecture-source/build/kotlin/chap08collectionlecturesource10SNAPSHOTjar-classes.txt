@@ -1,0 +1,1 @@
+C:\kotlinWorkspace\chap08-collection-lecture-source\build\classes\kotlin\main\Application1Kt.class;C:\kotlinWorkspace\chap08-collection-lecture-source\build\classes\kotlin\main\Application2Kt.class;C:\kotlinWorkspace\chap08-collection-lecture-source\build\classes\kotlin\main\Application3Kt.class

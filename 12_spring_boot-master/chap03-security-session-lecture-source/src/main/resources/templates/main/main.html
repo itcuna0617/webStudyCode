@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1 align="center">GREEDY RESTAURANT에 오신 것을 환영합니다.</h1>
+	<h1 align="center" th:text="${#authentication.principal}"></h1>
+	
+	<div align="right">
+		<th:block sec:authorize="isAnonymous()">	<!-- 인증되지 않은 경우(로그인 전) -->
+			<h3>로그인이 필요한 서비스입니다.</h3>
+			<button onclick="location.href='/member/login'">로그인</button>
+		</th:block>
+		<th:block sec:authorize="isAuthenticated()">	<!-- 인증된 경우(로그인 후) -->
+			<!-- <h3><span sec:authentication="principal.Username"></span>님 환영합니다.</h3> -->
+			<h3><span sec:authentication="principal.name"></span>님 환영합니다.</h3>
+			<!-- <h3><span th:text="${#authentication.principal.memberRoleList[0].authority.name}"></span>님 환영합니다.</h3> -->
+			<button onclick="location.href='/member/logout'">로그아웃</button>
+		</th:block>
+	</div>
+	
+	<div align="left">
+		<button onclick="location.href='/menu/list'">메뉴보기</button>
+		<th:block sec:authorize="hasRole('MEMBER')">	<!-- principal 안에 ROLE_ADMIN 권한이 있다면 보여질 block -->
+			<button onclick="location.href='/order/regist'">주문하기</button>
+		</th:block>
+		<th:block sec:authorize="hasRole('ADMIN')">	<!-- principal 안에 ROLE_ADMIN 권한이 있다면 보여질 block -->
+			<button onclick="location.href='/admin/dashboard'">관리자메뉴</button>
+		</th:block>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+

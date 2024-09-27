@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="6"
+    android:gravity="right">
+
+    <!-- 뷰그룹에 weightSum을 통해 전체 화면 분할(총 비중)을 설정하고 gravity로 자식 뷰들을 위치시킬 수 있다. -->
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="2"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="1"/>
+
+</LinearLayout>

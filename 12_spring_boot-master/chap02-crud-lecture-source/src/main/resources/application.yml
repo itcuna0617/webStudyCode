@@ -1,0 +1,28 @@
+## yaml 파일로 바꾸면 좋은 이점들
+## 1. 중복되어 작성할 것들을 줄일 수 있다.
+## 2. UTF-8로 되어 있어 주석을 처음부터 한글로 쓸 수 있다.
+## 3. 가독성 및 작성에 용이하다.
+
+## 서버 포트 설정
+server:
+  port: 8888
+
+## DB 커넥션 설정 
+## 로그를 찍고 싶을 때
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
+    username: C##GREEDY
+    password: GREEDY 
+    
+## 로그를 안 찍고 싶을 때
+#spring:
+#  datasource:
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    url: jdbc:oracle:thin:@localhost:1521:xe
+#    username: C##GREEDY
+#    password: GREEDY
+    
+## 다른 속성들을 적용하고 싶을 때 spring.io 사이트에서 Project 메뉴의 spring-boot에 있는
+## LEARN에서 Reference Doc -> application properties에서 찾아서 할 것!

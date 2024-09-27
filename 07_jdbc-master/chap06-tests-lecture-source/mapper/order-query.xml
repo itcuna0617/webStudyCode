@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd" >
+<properties>
+	<entry key="selectMenuByCategory">
+	    SELECT
+	           A.MENU_CODE
+	         , A.MENU_NAME
+	         , A.MENU_PRICE
+	         , A.CATEGORY_CODE
+	         , A.ORDERABLE_STATUS
+	      FROM TBL_MENU A
+	     WHERE A.CATEGORY_CODE = ?
+	       AND A.ORDERABLE_STATUS = 'Y'
+	</entry>
+	<entry key="insertOrder">
+	    INSERT
+	      INTO TBL_ORDER
+	    (
+	      ORDER_CODE
+	    , ORDER_DATE
+	    , ORDER_TIME
+	    , TOTAL_ORDER_PRICE
+	    )
+	    VALUES
+	    (
+	      SEQ_ORDER_CODE.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    )
+	</entry>
+	
+	<!-- 
+		마지막 주문 번호를 추출하는 방법(지금 주문 번호)
+		SELECT SEQ_ORDER_CODE.CURRVAL FROM DUAL;    SEQUENCE로부터
+		SELECT MAX(ORDER_CODE) FROM TBL_ORDER;      PK값 중 최대값으로부터
+	 -->
+	<entry key="selectLastOrderCode">
+	    SELECT
+	           SEQ_ORDER_CODE.CURRVAL
+	      FROM DUAL
+	</entry>
+	<entry key="insertOrderMenu">
+	    INSERT
+	      INTO TBL_ORDER_MENU
+	    (
+	      ORDER_CODE
+	    , MENU_CODE
+	    , ORDER_AMOUNT
+	    )
+	    VALUES
+	    (
+	      ?
+	    , ?
+	    , ?
+	    )
+	</entry>
+</properties>

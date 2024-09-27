@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="findAllMenu">
+	    SELECT 
+	           A.MENU_CODE
+	         , A.MENU_NAME
+	         , A.MENU_PRICE
+	         , A.CATEGORY_CODE
+	         , A.ORDERABLE_STATUS
+	      FROM TBL_MENU A
+	     WHERE A.ORDERABLE_STATUS = 'Y'
+	     ORDER BY 1 
+	</entry>
+    <entry key="findAllCategory">
+	    SELECT
+	           A.CATEGORY_CODE
+	         , A.CATEGORY_NAME
+	         , A.REF_CATEGORY_CODE
+	      FROM TBL_CATEGORY A
+	</entry>
+	<entry key="registNewMenu">
+	    INSERT
+	      INTO TBL_MENU A
+	    (
+	      A.MENU_CODE
+	    , A.MENU_NAME
+	    , A.MENU_PRICE
+	    , A.CATEGORY_CODE
+	    , A.ORDERABLE_STATUS
+	    )
+	    VALUES
+	    (
+	      SEQ_MENU_CODE.NEXTVAL
+	    , ?
+	    , ?
+	    , ?
+	    , ?
+	    )
+	</entry>
+</properties>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+
+    <persistence-unit name="jpatest">
+    
+    	<!-- xml방식으로 정적쿼리를 활용할 때 추가할 것 -->
+    	<mapping-file>META-INF/menu-mapper.xml</mapping-file>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
+            <property name="javax.persistence.jdbc.user" value="C##OHGIRAFFERS"/>
+            <property name="javax.persistence.jdbc.password" value="OHGIRAFFERS"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+			
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="true" />
+            <property name="hibernate.id.new_generator_mappings" value="true" />
+            
+            <!-- 자동 스키마 생성을 위한 설정 -->
+            <!-- <property name="hibernate.hbm2ddl.auto" value="create" /> -->
+        </properties>
+    </persistence-unit>
+
+</persistence>

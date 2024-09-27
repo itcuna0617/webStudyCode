@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+	<div th:include="common/header.html"></div>
+	<h3 align="center">신규 메뉴 등록</h3>
+	<form action="/menu/regist" method="post" align="center">
+		<label>메뉴 이름: </label><input type="text" name="name"><br>
+		<label>메뉴 가격: </label><input type="number" name="price"><br>
+		<label>카테고리 코드: </label>
+		<select name="categoryCode" id="categoryCode">
+			<!-- ajax로 조회해서 추가 될 부분 -->
+		</select>
+		<label>판매 상태: </label>
+		<select name="orderableStatus">
+			<option value="Y">Y</option>
+			<option value="N">N</option>
+		</select><br>
+		<input type="submit" value="전송">
+	</form>
+	<script>
+		function selectCategory() {
+			$.ajax({
+				url: "/menu/category",
+				success: function(data) {
+					/* console.table(data); */
+					const $categoryCode = document.querySelector("#categoryCode");
+					
+					for(let index in data) {
+						$option = document.createElement("option");
+						$option.value = data[index].code;
+						$option.textContent = data[index].name;
+						
+						$categoryCode.appendChild($option);
+					}
+				},
+				error: function(error) {
+					console.log(error);
+				}
+			});
+		}
+		
+		selectCategory();
+	</script>
+</body>
+</html>

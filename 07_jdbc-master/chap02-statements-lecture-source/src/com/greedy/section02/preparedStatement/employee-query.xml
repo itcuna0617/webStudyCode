@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>title</comment>
+
+	<!-- 해당 글자를 포함한 이름의 사원을 조회하는 쿼리 -->
+	<entry key="selectEmpByWord">
+		SELECT 
+		       *
+		  FROM EMPLOYEE
+		 WHERE EMP_NAME LIKE '%' || ? || '%'
+	</entry>
+	<entry key="">
+	
+	</entry>
+	<entry key="">
+	
+	</entry>
+	<entry key="">
+	
+	</entry>
+	
+</properties>

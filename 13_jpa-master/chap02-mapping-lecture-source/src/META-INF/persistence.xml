@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+
+    <persistence-unit name="jpatest">
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
+            <property name="javax.persistence.jdbc.user" value="C##OHGIRAFFERS"/>
+            <property name="javax.persistence.jdbc.password" value="OHGIRAFFERS"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="true" />
+            <property name="hibernate.id.new_generator_mappings" value="true" />
+             <!-- 
+	            TRUE 일 경우 SequenceStyleGenerator을 지원한다.
+					만약 데이터베이스가 시퀀스를 지원한다면, SequenceGenerator 를 사용한다.
+					반대로 시퀀스를 지원하지 않는다면 TableGenerator 를 사용한다.
+					(MySQL같은 경우는  @GeneratedValue(strategy = GenerationType.IDENTITY)를 사용하게 된다.)
+             -->
+            
+            <!-- 자동 스키마 생성을 위한 설정 -->
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <!-- 
+	            create : JPA가 DB와 상호작용할 때 기존에 있던 스키마(테이블)을 삭제하고 다시 생성
+				create-drop : JPA 종료 시점에 기존에 있었던 테이블을 삭제
+				update : JPA에 의해 변경된 부분만 반영(기존의 스키마를 삭제하지 않고 유지)
+				validate : 엔티티와 테이블이 정상 매핑되어 있는지만 검증(SessionFactory 시작시 객체구성과 스키마가 다르다면 예외 발생)
+				none : 초기화 동작을 사용 안함
+             -->
+        </properties>
+    </persistence-unit>
+
+</persistence>

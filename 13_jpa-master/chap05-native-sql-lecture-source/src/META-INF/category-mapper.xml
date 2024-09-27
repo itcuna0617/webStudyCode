@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" version="2.1">
+	
+	<!-- Named 네이티브 SQL용 엘리먼트 -->
+	<named-native-query name="Category.categoryWithMenuCountXml"
+						result-set-mapping="categoryWithMenuCountXmlMap">
+		<query>
+			SELECT
+				   A.CATEGORY_CODE, A.CATEGORY_NAME, A.REF_CATEGORY_CODE, D.MENU_COUNT
+		      FROM TBL_CATEGORY A
+			  LEFT JOIN (SELECT COUNT(*) AS MENU_COUNT, B.CATEGORY_CODE
+			               FROM TBL_CATEGORY B
+			               JOIN TBL_MENU C ON (B.CATEGORY_CODE = C.CATEGORY_CODE)
+			              GROUP BY B.CATEGORY_CODE) D ON (A.CATEGORY_CODE = D.CATEGORY_CODE)
+		     ORDER BY 1
+		</query>
+	</named-native-query>
+	
+	<!-- 결과 매핑용 엘리먼트 -->
+	<sql-result-set-mapping name="categoryWithMenuCountXmlMap">
+		<entity-result entity-class="com.ohgiraffers.section02.named.Category"/>
+		<column-result name = "MENU_COUNT"/>
+	</sql-result-set-mapping>
+</entity-mappings>

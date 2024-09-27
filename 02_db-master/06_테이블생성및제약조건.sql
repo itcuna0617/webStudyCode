@@ -1,0 +1,694 @@
+-- DDL(TABLE) 및 제약조건
+
+-- DDL(DATA DEFINITION LANGUAGE): 데이터 정의 언어
+-- 객체(OBJECT)를 만들고(CREATE), 수정(ALTER)하고, 삭제(DROP)하는 구문
+ 
+-- 오라클에서의 객체
+-- : 테이블(TABLE), 뷰(VIEW), 시퀀스(SEQUENCE)
+--   인덱스(INDEX), 패키지(PACKAGE), 트리거(TRIGGER),
+--   동의어(SYNONYM), 프로시저(PROCEDURE), 함수(FUNCTION),
+--   사용자(USER)
+   
+CREATE TABLE MEMBER(
+  MEMBER_ID VARCHAR2(20),
+  MEMBER_PWD VARCHAR2(20),
+  MEMBER_NAME VARCHAR2(20)
+);
+
+SELECT
+       *
+  FROM MEMBER;
+
+DESC MEMBER;
+
+-- 컬럼에 주석(COMMENT) 달기
+-- COMMENT ON COLUMN 테이블명.컬럼명 IS '주석내용'
+COMMENT ON COLUMN MEMBER.MEMBER_ID IS '아이디';
+COMMENT ON COLUMN MEMBER.MEMBER_PWD IS '비밀번호';
+COMMENT ON COLUMN MEMBER.MEMBER_NAME IS '이름';
+
+-- 테이블 삭제하기
+DROP TABLE MEMBER;
+ 
+DESC MEMBER;    -- 객체가 존재하지 않습니다.
+  
+-- 제약조건
+-- 테이블 작성 시 각 컬럼에 값 기록에 대한 제약조건을 설정할 수 있다.
+-- 데이터 무결성 보장을 목적으로 함
+-- 입력/수정하는 데이터에 문제가 없는지 자동으로 검사해 주게 하기 위한 목적
+-- PRIMARY KEY, NOT NULL, UNIQUE, CHECK, FOREIGN KEY
+  
+-- NOT NULL: 해당 컬럼에 반드시 값이 기록 되어야 하는 경우 사용
+--           삽입/수정 시 NULL값을 허용하지 않도록
+--           컬럼 레벨에서 제한★★
+CREATE TABLE USER_NOCONS(
+  USER_NO NUMBER,
+  USER_ID VARCHAR2(20),
+  USER_PWD VARCHAR2(30),
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50)
+);
+  
+INSERT
+  INTO USER_NOCONS
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+  
+INSERT
+  INTO USER_NOCONS
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  2, NULL, NULL
+, NULL, NULL, '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+  
+SELECT * FROM USER_NOCONS;
+
+ROLLBACK;
+COMMIT;
+
+-- 제약조건 적용한 테이블 생성
+CREATE TABLE USER_NOTNULL(
+  USER_NO NUMBER NOT NULL,      -- NOT NULL은 반드시 컬럼 레벨에서 제약조건 설정을 해야 한다.
+  USER_ID VARCHAR2(20) NOT NULL,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30) NOT NULL,
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50)
+);
+
+INSERT
+  INTO USER_NOTNULL
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+
+INSERT
+  INTO USER_NOTNULL
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  2, NULL, NULL
+, NULL, NULL, '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+
+SELECT * FROM USER_NOTNULL;
+
+-- UNIQUE 제약조건: 컬럼에 입력 값에 대해 중복을 제한한다는 제약조건
+--                 컬럼레벨에서 설정 가능, 테이블 레벨에서 설정 가능
+
+DROP TABLE USER_UNIQUE;
+CREATE TABLE USER_UNIQUE(
+  USER_NO NUMBER,
+  USER_ID VARCHAR2(20) UNIQUE NOT NULL,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50),
+  UNIQUE(USER_PWD)
+);
+
+INSERT
+  INTO USER_UNIQUE
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+
+INSERT
+  INTO USER_UNIQUE
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user02', 'pass02'             -- USER_ID와 USER_PWD는 중복되지 않게 하자, NULL값도 안됨
+, '홍길동', '남', '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+
+CREATE TABLE USER_UNIQUE2(
+  USER_NO NUMBER,
+  USER_ID VARCHAR2(20),
+  USER_PWD VARCHAR2(30),
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50),
+  UNIQUE(USER_ID, USER_PWD)
+--  UNIQUE(USER_ID),
+--  UNIQUE(USER_PWD)
+);
+
+INSERT
+  INTO USER_UNIQUE2
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+
+INSERT
+  INTO USER_UNIQUE2
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  2, 'user01', 'pass02'             -- USER_ID와 USER_PWD가 동시에 기존의 행과 일치하면 INSERT가 안되지만 하나만 중복되는 것은 허용된다.
+, '홍길동', '남', '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+
+-- CHECK 제약조건: 컬럼에 기록되는 값에 조건 설정을 할 수 있다.
+--                컬럼 레벨에서 설정 가능, 테이블 레벨에서 설정 가능
+-- CHECK(컬럼명 비교연산자 비교값)
+-- 주의: CHECK제약조건은 컬럼 레벨에서 적용하더라도 컬럼명을 써야한다.
+CREATE TABLE USER_CHECK(
+  USER_NO NUMBER,
+  USER_ID VARCHAR2(20) UNIQUE,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10) CHECK(GENDER IN ('남','여')),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50)
+);  
+
+INSERT
+  INTO USER_CHECK
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-1234-5678'
+, 'hong123@greedy.or.kr'
+);
+   
+INSERT
+  INTO USER_CHECK
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user02', 'pass01'             -- UNIQUE 제약조건 및 NOT NULL 제약조건은 만족
+, '홍길동', '외', '010-1234-5678'    -- '남' 또는 '여'가 아닌 값은 CHECK 제약조건에 위반된다.
+, 'hong123@greedy.or.kr'
+);   
+   
+CREATE TABLE TBL_CHECK(
+  C_NAME VARCHAR2(10),
+  C_PRICE NUMBER CONSTRAINT CK_C_PRICE CHECK(C_PRICE >= 1 AND C_PRICE <= 99999),
+  C_LEVEL CHAR(1),
+  C_DATE DATE,
+  CONSTRAINT CK_C_LEVEL CHECK(C_LEVEL = 'A' OR C_LEVEL = 'B' OR C_LEVEL = 'C'),
+  CONSTRAINT CK_C_DATE CHECK(C_DATE >= TO_DATE('2016/01/01', 'YYYY/MM/DD'))
+);
+
+-- 회원 가입용 테이블 생성(USER_TEST)
+-- 컬럼명: USER_NO(회원번호)
+--        USER_ID(회원아이디) -- 중복 금지, NULL값 허용 안함
+--        USER_PWD(회원비밀번호) -- NULL값 허용 안함
+--        PNO(주민등록번호) -- 중복 금지, NULL값 허용 안함
+--        GENDER(성별) -- '남' 혹은 '여'로 입력
+--        PHONE(연락처)
+--        ADDRESS(주소)
+--        STATUS(탈퇴여부) -- NOT NULL, 'Y' 혹은 'N'으로 입력
+-- 각 컬럼에 제약조건 이름 부여
+-- 5명 이상 회원 정보 INSERT
+-- 각 컬럼별로 코멘트 작성
+-- 자료형은 재량껏 작성
+-- (제약조건 이름 룰: NOT NULL -> NN, CHECK -> CK, UNIQUE -> UK)
+   
+CREATE TABLE USER_TEST(
+  USER_NO NUMBER,
+  USER_ID VARCHAR2(50) CONSTRAINT NN_USER_ID NOT NULL,
+  USER_PWD VARCHAR2(50) CONSTRAINT NN_PNO NOT NULL,
+  PNO VARCHAR2(50) CONSTRAINT NN_PNO NOT NULL,
+  GENDER VARCHAR2(3),
+  PHONE VARCHAR2(50),
+  ADDRESS VARCHAR2(100),
+  STATUS VARCHAR2(1) CONSTRAINT NN_STATUS NOT NULL,
+  CONSTRAINT UK_USER_ID UNIQUE(USER_ID),
+  CONSTRAINT UK_PNO UNIQUE(PNO),
+  CONSTRAINT CK_GENDER CHECK(GENDER IN('남', '여')),
+  CONSTRAINT CK_STATUS CHECK(STATUS IN('Y', 'N'))
+);
+
+COMMENT ON COLUMN USER_TEST.USER_NO IS '회원번호';
+COMMENT ON COLUMN USER_TEST.USER_ID IS '회원아이디';
+COMMENT ON COLUMN USER_TEST.USER_PWD IS '회원비밀번호';
+COMMENT ON COLUMN USER_TEST.PNO IS '주민등록번호';
+COMMENT ON COLUMN USER_TEST.GENDER IS '성별';
+COMMENT ON COLUMN USER_TEST.PHONE IS '연락처';
+COMMENT ON COLUMN USER_TEST.ADDRESS IS '주소';
+COMMENT ON COLUMN USER_TEST.STATUS IS '탈퇴여부';
+
+INSERT
+  INTO USER_TEST
+(
+  USER_NO, USER_ID, USER_PWD,
+  PNO, GENDER, PHONE,
+  ADDRESS, STATUS 
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '881122-1231234', '남', '010-1234-5678'
+, '서울시 강남구 역삼동', 'N'
+);
+   
+INSERT
+  INTO USER_TEST
+(
+  USER_NO, USER_ID, USER_PWD,
+  PNO, GENDER, PHONE,
+  ADDRESS, STATUS 
+)
+VALUES
+(
+  1, 'user02', 'pass01'
+, '881122-1231235', '남', '010-1234-5678'
+, '서울시 강남구 역삼동', 'N'
+);   
+   
+INSERT
+  INTO USER_TEST
+(
+  USER_NO, USER_ID, USER_PWD,
+  PNO, GENDER, PHONE,
+  ADDRESS, STATUS 
+)
+VALUES
+(
+  1, 'user03', 'pass01'
+, '881122-1231236', '남', '010-1234-5678'
+, '서울시 강남구 역삼동', 'N'
+); 
+   
+INSERT
+  INTO USER_TEST
+(
+  USER_NO, USER_ID, USER_PWD,
+  PNO, GENDER, PHONE,
+  ADDRESS, STATUS 
+)
+VALUES
+(
+  1, 'user04', 'pass01'
+, '881122-1231237', '남', '010-1234-5678'
+, '서울시 강남구 역삼동', 'N'
+);    
+   
+INSERT
+  INTO USER_TEST
+(
+  USER_NO, USER_ID, USER_PWD,
+  PNO, GENDER, PHONE,
+  ADDRESS, STATUS 
+)
+VALUES
+(
+  1, 'user05', 'pass01'
+, '881122-1231238', '남', '010-1234-5678'
+, '서울시 강남구 역삼동', 'N'
+);   
+
+SELECT * FROM USER_TEST;
+
+-- PRIMARY KEY(기본키) 제약조건
+-- : 테이블에서 한 행의 정보를 찾기 위해 사용 할 컬럼을 의미한다.
+--   테이블에 대한 식별자 역할을 한다.(한 행씩 구분하는 역할을 한다.)
+--   NOT NULL + UNIQUE 제약조건의 의미
+--   한 테이블당 한 개만 설정할 수 있음
+--   컬럼 레벨, 테이블 레벨 둘 다 설정 가능함
+--   한 개 컬럼에 설정할 수도 있고, 여러 개의 컬럼을 묶어서 설정할 수도 있음(복합키)
+
+DROP TABLE USER_PRIMARYKEY;
+CREATE TABLE USER_PRIMARYKEY(
+  USER_NO NUMBER CONSTRAINT PK_USER_NO PRIMARY KEY,   -- 컬럼 레벨에서 제약조건 설정
+  USER_ID VARCHAR2(20) UNIQUE,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50)
+);
+
+INSERT
+  INTO USER_PRIMARYKEY
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-123-1234'
+, 'hong123@greedy.or.kr'
+);
+
+INSERT
+  INTO USER_PRIMARYKEY
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  1, 'user02', 'pass01'                   -- PK 컬럼의 경우 중복 값은 들어갈 수 없다.
+, '홍길동', '남', '010-123-1234'
+, 'hong123@greedy.or.kr'
+);
+
+INSERT
+  INTO USER_PRIMARYKEY
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL
+)
+VALUES
+(
+  NULL, 'user03', 'pass01'                   -- PK일 경우 NULL은 들어갈 수 없다.
+, '홍길동', '남', '010-123-1234'
+, 'hong123@greedy.or.kr'
+);
+
+CREATE TABLE USER_PRIMARYKEY2(
+  USER_NO NUMBER,
+  USER_ID VARCHAR2(20) UNIQUE,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50),
+  CONSTRAINT PK_USER_NO_USER_ID PRIMARY KEY(USER_NO, USER_ID) -- 두 개 이상의 컬럼을 묶어서 기본키(복합키)로 설정할 수 있다.(테이블 레벨)
+);
+
+-- FOREIGN KEY(외부키/외래키) 제약조건
+-- : 참조(REFERENCES)된 다른 테이블에서 제공하는 값만 사용할 수 있음
+--   참조 무결성을 위배하지 않기 위해 사용
+--   FOREIGN KEY 제약조건에 의해서
+--   테이블 간의 관계(RELATIONSHIP)가 형성 됨
+--   제공되는 값 외에는 NULL을 사용할 수 있음
+   
+-- 컬럼 레벨일 경우
+-- 컬럼명 자료형(크기) [CONSTRAINT 이름] REFERENCES 참조할테이블명 [(참조할컬럼)] [삭제룰]
+ 
+-- 테이블 레벨일 경우
+-- [CONSTRAINT 이름] FOREIGN KEY (적용할 컬럼명) REFERENCES 참조할테이블명 [(참조할 컬럼)] [삭제룰]
+
+CREATE TABLE USER_GRADE(
+  GRADE_CODE NUMBER PRIMARY KEY,
+  GRADE_NAME VARCHAR2(30) NOT NULL
+);
+
+INSERT
+  INTO USER_GRADE
+(
+  GRADE_CODE
+, GRADE_NAME
+)
+VALUES
+(
+  10
+, '일반회원'
+);
+
+INSERT
+  INTO USER_GRADE
+(
+  GRADE_CODE
+, GRADE_NAME
+)
+VALUES
+(
+  20
+, '우수회원'
+);
+
+INSERT
+  INTO USER_GRADE
+(
+  GRADE_CODE
+, GRADE_NAME
+)
+VALUES
+(
+  30
+, '특별회원'
+);
+
+SELECT * FROM USER_GRADE;
+-- DELETE FROM USER_GRADE WHERE GRADE_CODE = 40; -- 실수 했을 땐 이 구문으로 하나의 행을 제거하자
+
+CREATE TABLE USER_FOREIGNKEY(
+  USER_NO NUMBER PRIMARY KEY,
+  USER_ID VARCHAR2(20) UNIQUE,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50),
+  GRADE_CODE NUMBER,
+  CONSTRAINT FK_GRADE_CODE FOREIGN KEY (GRADE_CODE) REFERENCES USER_GRADE (GRADE_CODE)
+);
+
+INSERT
+  INTO USER_FOREIGNKEY
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL, GRADE_CODE
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-123-4567'
+, 'hong123@greedy.or.kr', 10
+);
+
+INSERT
+  INTO USER_FOREIGNKEY
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL, GRADE_CODE
+)
+VALUES
+(
+  2, 'user02', 'pass01'
+, '홍길동', '남', '010-123-4567'
+, 'hong123@greedy.or.kr', NULL
+);
+
+INSERT
+  INTO USER_FOREIGNKEY
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL, GRADE_CODE
+)
+VALUES
+(
+  3, 'user03', 'pass01'
+, '홍길동', '남', '010-123-4567'
+, 'hong123@greedy.or.kr', 40    -- USER_GRADE 테이블의 GRADE_CODE에 없는 값은 FK제약조건이 적용 된 컬럼에 넣을 수 없다.
+);
+
+DELETE FROM USER_GRADE WHERE GRADE_CODE = 10;  -- 삭제룰을 적용하지 않으면 참조하고 있는 회원 등급을 삭제할 수 없다.
+DELETE FROM USER_GRADE WHERE GRADE_CODE = 20;  -- 삭제룰을 적용하지 않으면 참조하고 있지 않은 회원 등급은 삭제할 수 있다.
+
+-- ON DELETE SET NULL
+CREATE TABLE USER_FOREIGNKEY2(
+  USER_NO NUMBER PRIMARY KEY,
+  USER_ID VARCHAR2(20) UNIQUE,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50),
+  GRADE_CODE NUMBER,
+  CONSTRAINT FK_GRADE_CODE2 FOREIGN KEY (GRADE_CODE)        -- 제약조건 이름도 기존 것과 중복되게 사용할 수 없다.
+  REFERENCES USER_GRADE (GRADE_CODE) ON DELETE SET NULL 
+);
+
+INSERT
+  INTO USER_FOREIGNKEY2
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL, GRADE_CODE
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-123-4567'
+, 'hong123@greedy.or.kr', 10
+);
+
+INSERT
+  INTO USER_FOREIGNKEY2
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL, GRADE_CODE
+)
+VALUES
+(
+  2, 'user02', 'pass01'
+, '홍길동', '남', '010-123-4567'
+, 'hong123@greedy.or.kr', 20
+);
+
+SELECT * FROM USER_GRADE;
+SELECT * FROM USER_FOREIGNKEY2;
+   
+DELETE
+  FROM USER_GRADE
+ WHERE GRADE_CODE = 20;
+   
+-- ON DELETE CASCADE: 부모키 삭제 시 자식 키를 가진 행도 함께 삭제
+CREATE TABLE USER_FOREIGNKEY3(
+  USER_NO NUMBER PRIMARY KEY,
+  USER_ID VARCHAR2(20) UNIQUE,
+  USER_PWD VARCHAR2(30) NOT NULL,
+  USER_NAME VARCHAR2(30),
+  GENDER VARCHAR2(10),
+  PHONE VARCHAR2(30),
+  EMAIL VARCHAR2(50),
+  GRADE_CODE NUMBER,
+  CONSTRAINT FK_GRADE_CODE3 FOREIGN KEY (GRADE_CODE)        -- 제약조건 이름도 기존 것과 중복되게 사용할 수 없다.
+  REFERENCES USER_GRADE (GRADE_CODE) ON DELETE CASCADE
+);
+   
+INSERT
+  INTO USER_FOREIGNKEY3
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL, GRADE_CODE
+)
+VALUES
+(
+  1, 'user01', 'pass01'
+, '홍길동', '남', '010-123-4567'
+, 'hong123@greedy.or.kr', 10
+);   
+   
+INSERT
+  INTO USER_FOREIGNKEY3
+(
+  USER_NO, USER_ID, USER_PWD
+, USER_NAME, GENDER, PHONE
+, EMAIL, GRADE_CODE
+)
+VALUES
+(
+  2, 'user02', 'pass01'
+, '홍길동', '남', '010-123-4567'
+, 'hong123@greedy.or.kr', 20
+);   
+
+SELECT * FROM USER_GRADE;
+SELECT * FROM USER_FOREIGNKEY3;
+
+DELETE
+  FROM USER_GRADE
+ WHERE GRADE_CODE = 20;
+   
+-- ALTER
+-- 제약조건 추가
+-- ALTER TABLE 테이블명 ADD PRIMARY KEY(컬럼명)
+-- ALTER TABLE 테이블명 ADD FOREIGN KEY(컬럼명)
+--                         REFERENCES 테이블명 (컬럼명)
+-- ALTER TABLE 테이블명 ADD UNIQUE(컬럼명)
+-- ALTER TABLE 테이블명 ADD CHECK(컬럼명 비교연산자 비교값)
+-- ALTER TABLE 테이블명 MODIFY 컬럼명 NOT NULL ★★★
+ALTER TABLE EMPLOYEE ADD PRIMARY KEY(EMP_ID);
+ALTER TABLE DEPARTMENT ADD PRIMARY KEY(DEPT_ID);
+ALTER TABLE EMPLOYEE MODIFY EMAIL NOT NULL;
+
+-- 실습
+-- EMPLOYEE 테이블의 DEPT_CODE에 외래키 제약조건 추가
+-- (참조 테이블은 DEPARTMENT, 참조 컬럼은 DEPARTMENT의 기본키인 DEPT_ID)
+-- DEPARTMENT 테이블의 LOCATION_ID에 외래키 제약조건 추가
+-- (참조 테이블은 LOCATION, 참조 컬럼은 LOCATION의 기본키인 LOCAL_CODE)
+-- EMPLOYEE 테이블의 JOB_CODE에 외래키 제약조건 추가
+-- (참조 테이블은 JOB, 참조 컬럼은 JOB의 기본키인 JOB_CODE)
+-- EMPLOYEE 테이블의 SAL_LEVEL에 외래키 제약조건 추가
+-- (참조 테이블은 SAL_GRADE, 참조 컬럼은 SAL_GRADE의 기본키인 SAL_LEVEL)
+-- EMPLOYEE 테이블의 ENT_YN컬럼에 CHECK제약조건 추가('Y','N')
+-- (단, 대 소문자를 구분하기 때문에 대문자로 설정)
+-- EMPLOYEE 테이블의 SALARY 컬럼에 CHECK제약조건 추가(양수)
+-- EMPLOYEE 테이블의 EMP_NO 컬럼에 UNIQUE 제약조건 추가
+
+ALTER TABLE EMPLOYEE ADD FOREIGN KEY(DEPT_CODE) REFERENCES DEPARTMENT(DEPT_ID);
+ALTER TABLE DEPARTMENT ADD FOREIGN KEY(LOCATION_ID) REFERENCES LOCATION(LOCAL_CODE);
+ALTER TABLE EMPLOYEE ADD FOREIGN KEY(JOB_CODE) REFERENCES JOB(JOB_CODE);
+ALTER TABLE EMPLOYEE ADD FOREIGN KEY(SAL_LEVEL) REFERENCES SAL_GRADE(SAL_LEVEL);
+ALTER TABLE EMPLOYEE ADD CHECK (ENT_YN IN ('Y', 'N'));
+ALTER TABLE EMPLOYEE ADD CHECK(SALARY > 0);
+ALTER TABLE EMPLOYEE ADD UNIQUE(EMP_NO);
+
+
+
+

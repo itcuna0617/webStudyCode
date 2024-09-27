@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:background="#4CAF50"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:gravity="center_vertical">
+
+    <!-- 개별 뷰의 높이를 wrap_content로 할 것! -->
+
+    <!-- 2. 리스트에 포함될 개별 데이터를 그려낼 XML 레이아웃 파일 -->
+    <TextView
+        android:id="@+id/movie_rank"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/view_border"
+        />
+
+    <TextView
+        android:id="@+id/movie_movieNm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        />
+
+    <ImageView
+        android:id="@+id/arrow_rankInten"
+        android:src="@drawable/ic_sort_up_solid"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="15dp"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/movie_rankInten"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        />
+    
+</LinearLayout>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1 align="center">Request Parameter</h1>
+	
+	<!-- 
+		서블릿을 배울 때 요청은 크게 GET과 POST로 나눠서 생각하자.
+		1. GET
+		   : GET요청은 조회를 하게 될 때 요청하는 방식이고 URL 경로에 노출되는 방식으로 서버에
+		     값을 넘기며 조회하게 된다.(쿼리스트링, pathVariable)
+		2. POST
+		   : POST요청은 조회를 제외한 나머지(DML)를 진행할 때 주로 사용하며
+		     경우에 따라 조회 시 URL 경로에 노출되지 않고 서버에 값을 넘기거나
+		     조회를 위해 서버로 넘기는 값의 크기가 클 때(255byte 초과)
+		     POST 요청을 진행하게 된다.
+		
+		Restful하게 REST API방식으로 요청 시에는 더 세분화 된 Http Method들(7가지)을 사용하게
+		되겠지만 현재는 이 두가지 방식의 요청에만 집중하자.
+		(애초에 form 태그의 method 속성에 줄 수 있는 요청 방식이 get과 post 두가지 뿐이기도 하다.)
+	 -->
+	
+	<h3>GET 방식의 요청</h3>
+	<h4>a태그의 href 속성값 변경</h4>
+	<a href="request-service">서비스 메소드 요청하기</a>
+	<h4>form 태그의 method 속성을 get으로 설정</h4>
+	<form action="request-service" method="get">
+		<input type="submit" value="GET 방식 요청 전송">
+	</form>
+	
+	<h3>POST 방식의 요청</h3>
+	<h4>form 태그의 method 속성을 post로 설정</h4>
+	<form action="request-service" method="post">
+		<button type="button" onclick="test()">fetch 버튼</button>
+		<input type="submit" value="POST 방식 요청 전송">
+	</form>
+	
+	<script type="text/javascript">
+		function test() {
+			fetch("request-service", {method:"put"});
+		}
+	</script>
+	
+	
+</body>
+</html>

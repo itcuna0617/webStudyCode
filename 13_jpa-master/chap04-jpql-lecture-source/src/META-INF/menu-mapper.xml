@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" version="2.1">
+	
+	<!-- xml에서 <,>들을 사용하기 위해서는 역시나 CDATA를 적용해 줄 수 있다. -->
+	<named-query name="Menu.selectMenuNameXml">
+		<query>
+			<![CDATA[			
+			SELECT 
+			       m
+			  FROM SECTION08_MENU m
+			]]>
+		</query>
+	</named-query>
+	<named-query name="Menu.selectMenuNameByCodeXml">
+		<query>
+			SELECT 
+			       m
+			  FROM SECTION08_MENU m
+			 WHERE m.code = :menuCode
+		</query>
+	</named-query>
+</entity-mappings>

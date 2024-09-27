@@ -1,0 +1,47 @@
+/* 속성값과 일치하는 객체(태그, 요소) 선택 */
+div[name=name2] {
+    background: orangered;
+}
+
+/* 속성 안의 값이 특정 값을 단어(띄어쓰기 단위)로써 포함하는 객체 선택 */
+div[name~=name1] {
+    background: yellow;
+}
+
+/* 속성 값이 특정 값과 일치하거나 '-'문자가 곧바로 해당 값 뒤에 따라붙는 객체 선택 */
+div[class|=class] {      /* class 또는 class- */
+    background: cyan;
+}
+
+/* 속성 값을 가지고 있으며, 접두사로 특정 값이 포함되어 있는 객체 선택 */
+div[name^=name] {
+    background: blue;
+}
+
+/* 속성 안의 값이 특정 값으로 끝나는(접미사) 객체 선택 */
+div[class$=class] {
+    color: white;
+}
+
+/* 속성 안의 값이 특정 값을 포함하는 객체 선택 */
+div[class*=div] {
+    background: yellow;
+    color: red;
+}
+
+#test1>h4 {
+    background:hotpink;
+}
+
+#test1>ul>li {
+    background:cyan;
+}
+
+#test1 ul {
+    background: yellow;
+}
+
+/* 동일한 선택자를 또 사용해도 문제 없다. */
+#test1 ul {
+    color: red;
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="findMemberById">
+        SELECT
+               A.MEMBER_NO
+             , A.MEMBER_ID
+             , A.MEMBER_PWD
+             , A.TEMP_PWD_YN
+             , A.PWD_CHANGED_DATETIME
+             , A.PWD_EXP_DATE
+             , A.MEMBER_NAME
+             , A.MEMBER_REGIST_DATETIME
+             , A.ACCUM_LOGIN_COUNT
+             , A.LOGIN_FAILED_COUNT
+             , A.ACC_LOCK_YN
+             , A.ACC_INACTIVE_YN
+             , A.ACC_EXP_DATE
+             , A.ACC_EXP_YN
+             , A.ACC_SECESSION_DATETIME
+             , A.ACC_SECESSION_YN          
+          FROM TBL_MEMBER A
+         WHERE A.MEMBER_ID = ?
+	</entry>
+    <entry key="findMemberRoleByMemberNo">
+        SELECT
+               A.MEMBER_NO
+             , A.AUTHORITY_CODE
+          FROM TBL_MEMBER_ROLE A
+         WHERE A.MEMBER_NO = ?
+	</entry>
+	<entry key="findAuthorityByAuthorityCode">
+        SELECT
+                A.AUTHORITY_CODE
+              , A.AUTHORITY_NAME
+              , A.AUTHORITY_DESC
+           FROM TBL_AUTHORITY A
+          WHERE A.AUTHORITY_CODE = ?
+	</entry>
+</properties>

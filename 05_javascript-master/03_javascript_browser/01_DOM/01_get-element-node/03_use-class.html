@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03. use-class</title>
+</head>
+<body>
+    <h1>03. class를 이용한 요소 노드 취득</h1>
+
+    <ul id="available">
+        <li class="drink coffee"><p>커피</p></li>
+        <li class="drink coke">콜라</li>
+        <li class="drink milk">우유</li>
+    </ul>
+    <ul id="unavailable">
+        <li class="drink soju">소주</li>
+        <li class="drink beer">맥주</li>
+    </ul>
+    <script>
+
+        /* class 이름이 drink인 요소들을 가져와서 HTMLCollection 타입으로 반환 */
+        const $drinks = document.getElementsByClassName("drink");
+        console.log($drinks);
+        console.log($drinks.length);
+
+        [...$drinks].forEach(drink => drink.style.color = 'red');
+
+        const $coffee = document.getElementsByClassName('drink coffee');
+        console.log($coffee[0].innerHTML);  // 가져온 요소의 프로퍼티에 접근할 수 있다, 그리고 innerHTML은 내부 HTML요소 노드까지 읽어옴
+        console.log($coffee[0].innerText);  // innerText는 내부 Text 노드만 읽어옴
+
+       const $available = document.getElementById('available');
+       const $availableDrinks = $available.getElementsByClassName('drink');
+       console.log($availableDrinks);
+
+       /* 해당 class를 갖는 요소가 없을 경우 빈 HTMLCollection 객체 반환 */
+       const $noElem = $available.getElementsByClassName('somac');
+       console.log($noElem);
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+    <!--
+        조건부 렌더링
+        여러 개의 엘리먼트 중 특정 조건에 따라 하나의 엘리먼트만 렌더링할 수 있다.
+    -->
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const answer = parseInt(prompt('리액트가 재미있으신가요?\n1. 재미있다.\n2. 어렵다'));   // parseInt: 숫자로 바꿀 수 있는데까지만 숫자로 바꿔줌
+
+        // console.log(answer);
+        // console.log(answer === 1);
+
+        /* 1. 렌더링 시 조건 비교 후 조건부 렌더링하기(최대한 조건식이 심플할 때) */
+        // const positiveElement = <h1>앞으로 점점 더 재미있어 질 거예요^^</h1>;
+        // const negativeElement = <h1>천천히 앞의 내용을 복습해 보세요^^</h1>;
+
+        // root.render(
+        //     (answer === 1)? positiveElement: negativeElement
+        // );
+
+        /* 2. JSX 내에서 조건부로 엘리먼트 생성하기(특정한 상황에 따라 다른 엘리먼트를 생성하는 것이 더 좋은 방법이다.) */
+        /* 2-1. if문으로 조건부 엘리먼트 생성하기 */
+        // let element;
+        // if(answer === 1) {
+        //     element = <h1>앞으로 점점 더 재미있어 질 거예요^^</h1>;
+        // } else {
+        //     element = <h1>천천히 앞의 내용을 복습해 보세요^^</h1>;
+        // }
+
+        /* 2-2. 삼항연산자로 조건부 엘리먼트 생성하기(const로 할 수 있다는 것과 삼항연산자를 쓰는 구문을 더 많이 사용한다.) */
+        // const element = (answer === 1)? (
+        //     <h1>앞으로 점점 더 재미있어 질 거예요^^</h1>
+        // ): (
+        //     <h1>천천히 앞의 내용을 복습해 보세요^^</h1>
+        // );
+
+        /* 2-3. && 연산자를 이용한 조건부 엘리먼트 생성하기(조건이 맞을 때만 엘리먼트가 보이게 할 경우) */
+        // const element = answer === 1 && <h1>앞으로 점점 더 재미있어 질 거예요^^</h1>
+        // console.log(element);
+
+        /*
+            주의 사항
+            false 조건을 가지고 렌더링을 하는 경우 조건에 일치하지 않으면 렌더링 되는 요소가 없지만
+            0은 Falsy한 값임에도 조건부 엘리먼트 생성을 하게 되면 0을 반환한다. 
+            (Falsy값은 boolean 값에서 false로 평가되는 값을 말하며 null, undefined, 0, NaN, ''이 있다.)
+        */
+        const number = 0;
+        console.log(!!number);     // false
+        const element = number && <h1>truthy일 때 나오는 태그</h1>;
+
+        root.render(element);       // falsy 값이지만 element로 취급 됨
+    </script>
+</body>
+</html>

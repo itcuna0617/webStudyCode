@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <TextView
+        android:id="@+id/rankTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"/>
+
+    <android.widget.Button
+        android:id="@+id/mainBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6EE673"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:text="메인으로" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MovieListActivity"
+        android:id="@+id/movie_list">
+
+    <!-- 반드시 리싸이클러 뷰 레이아웃은 아이디를 가지고 있어야 한다.(추가할 것!) -->
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

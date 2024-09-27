@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--
+        layout_gravity 속성으로 뷰의 위치 설정 가능
+        gravity 속성으로는 뷰 안의 요소(text 또는 다른 뷰) 위치 설정 가능
+     -->
+    <Button
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:text="Button1"
+        android:textAllCaps="false"/> <!-- 버튼 문자 대문자 되는 기능 비활성화 -->
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_gravity="right"
+        android:gravity="left|center"
+        android:text="Button2"/>
+
+
+</LinearLayout>

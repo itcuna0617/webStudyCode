@@ -1,0 +1,15 @@
+-- 계정 생성 및 권한 부여(SYSTEM 계정에서 할 것)
+CREATE USER C##EMPLOYEE IDENTIFIED BY EMPLOYEE;     -- 계정 추가(ID 및 PWD 추가)
+GRANT CONNECT, RESOURCE TO C##EMPLOYEE;             -- 접속 및 RESOURCE관련 권한 부여
+
+-- 각각의 권한을 부여
+GRANT CONNECT TO C##EMPLOYEE;
+GRANT RESOURCE TO C##EMPLOYEE;
+GRANT CREATE VIEW TO C##EMPLOYEE;                   -- VIEW를 만들기 위한 권한 부여
+
+-- 한번에 세개의 권한을 계정에 부여
+GRANT CONNECT, RESOURCE, CREATE VIEW TO C##EMPLOYEE;
+
+-- 해당 계정에서 DDL 및 DML 작업을 하기 위해 필요한 작업(SYSTEM 계정에서 할 것)
+ALTER USER C##EMPLOYEE DEFAULT TABLESPACE USERS QUOTA UNLIMITED ON USERS;   -- TABLESPACE 확보
+ALTER USER C##EMPLOYEE QUOTA 1024M ON SYSTEM;                               -- SYSTEM 공간 확보
